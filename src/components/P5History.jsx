@@ -7,24 +7,26 @@ const P5History = () => {
     const [history, setHistory] = useState([]);
     const [user, setUser] = useState(null);
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     useEffect(() => {
-        // Fetch user details
-        fetch(`/users/${id}`)
+        fetch(`${apiUrl}/users/${id}`)
             .then(response => response.json())
             .then(data => setUser(data));
 
-        // Fetch P5 history
-        fetch(`/transactions/${id}/p5`)
+        fetch(`${apiUrl}/transactions/${id}/p5`)
             .then(response => response.json())
             .then(data => setHistory(data));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
     const handleDelete = (historyId, points) => {
-        fetch(`/transactions/${id}/p5/${historyId}`, {
+        fetch(`${apiUrl}/transactions/${id}/p5/${historyId}`, {
             method: 'DELETE',
         }).then(() => {
             setHistory(prevHistory => prevHistory.filter(item => item._id !== historyId));
-            setUser(prevUser => ({ ...prevUser, p5Balance: prevUser.p5Balance - points }));
+            setUser(prevUser => ({ ...prevUser, p5Balance: prevUser.p5Balance + points }));
         });
     };
 

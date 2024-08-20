@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './UserList.css'; 
+import './UserList.css';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
 
+    const apiUrl = process.env.REACT_APP_API_URL;
+
     useEffect(() => {
-        fetch('/users')
+        fetch('${apiUrl}/users')
             .then(response => response.json())
             .then(data => setUsers(data));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
